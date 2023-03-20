@@ -2,10 +2,12 @@
 # ☁️ AWS Secrets Manager Permissions
 ## Description
 
+
 This module sets IAM Policies, and optionally IAM roles attachments to specific roles in order to grant several permissions (E.g.: read a secret) to a specific service, or component.
 A summary of its main features:
 🚀 Create an IAM policy, based on a looked up AWS secret.
 🚀 Create optionally an attachment, if there's an IAM role that's passed.
+
 ---
 ## Example
 Examples of this module's usage are available in the [examples](./examples) folder.
@@ -32,7 +34,21 @@ secret_permissions = [
   }
 ]
 ```
+In this example, more elaborate permissions are granted
+```hcl
+aws_region = "us-east-1"
+is_enabled = true
+
+secret_permissions = [
+  {
+    name        = "test1"
+    secret_name = "test/terraform"
+    permissions = ["GetSecretValue", "DescribeSecret", "PutSecretValue"]
+  }
+]
+```
 ---
+
 
 ## Module's documentation
 (This documentation is auto-generated using [terraform-docs](https://terraform-docs.io))

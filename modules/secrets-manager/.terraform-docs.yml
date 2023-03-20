@@ -6,12 +6,15 @@ content: |-
     # ☁️ AWS Secrets Manager
     ## Description
     {{ .Header }}
+
     This module simplifies the management of AWS Secrets Manager by creating a secret and integrating it with a Go application called "secret-manager-filler". The application is responsible for setting the actual value of the secret outside of Terraform, ensuring a secure and efficient secret handling process. The capabilities of this module correspond to the aws_secretsmanager_secret resource.
     A summary of its main features:
+
     🚀 Create a new AWS Secrets Manager secret.
     🚀 Seamlessly integrate with the "secret-manager-filler" Go application to set secret values outside Terraform.
     🚀 Utilize the aws_secretsmanager_secret resource for advanced secret management options.
     🚀 Enhance security and management of sensitive data in your AWS environment.
+
     ---
     ## Example
     Examples of this module's usage are available in the [examples](./examples) folder.
