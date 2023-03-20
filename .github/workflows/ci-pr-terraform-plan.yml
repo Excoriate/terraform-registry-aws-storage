@@ -6,8 +6,8 @@ on:
         types: [opened, edited, synchronize]
 
 env:
-    AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    AWS_ACCESS_KEY_ID: ${{ adapter.AWS_ACCESS_KEY_ID }}
+    AWS_SECRET_ACCESS_KEY: ${{ adapter.AWS_SECRET_ACCESS_KEY }}
     AWS_DEFAULT_REGION: us-east-1
 
 jobs:
@@ -98,7 +98,7 @@ jobs:
               env:
                   PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
               with:
-                  github-token: ${{ secrets.GITHUB_TOKEN }}
+                  github-token: ${{ adapter.GITHUB_TOKEN }}
                   script: |
                       const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
                       #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`

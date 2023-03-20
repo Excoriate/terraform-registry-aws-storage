@@ -138,6 +138,16 @@ tasks:
             - task: test:run-integration-all-nocache
               vars: {TF_MODULE: '{{.MODULE}}', TF_EXAMPLE_RECIPE: '{{.RECIPE}}'}
 
+    secrets-manager-cli:
+        desc: Run small utility for secrets manager that updates a secret value.
+        dir: app/secret-manager-filler
+        cmds:
+            - |
+              if [ -f secret-manager-filler ]; then rm secret-manager-filler; fi
+              cd cmd
+              go build -o secret-manager-filler
+            - ./cmd/secret-manager-filler {{.CLI_ARGS}}
+
     init:
         desc: Generate code using the built-in CLI.
         cmds:

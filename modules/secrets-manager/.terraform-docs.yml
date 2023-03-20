@@ -15,6 +15,18 @@ content: |-
     🚀 Utilize the aws_secretsmanager_secret resource for advanced secret management options.
     🚀 Enhance security and management of sensitive data in your AWS environment.
 
+    It's also included a small utility that aims to be used as a `cli` for updating or populating secret `values` outside of
+    terraform.
+    ```bash
+    task secrets-manager-cli
+
+    # This list all the secrets
+    task secrets-manager-cli -- list --region=us-east-1o
+
+    # This updates the value of a secret
+    task secrets-manager-cli -- populate --region=us-east-1 --name=secret-name --value=secret-value
+    ```
+
     ---
     ## Example
     Examples of this module's usage are available in the [examples](./examples) folder.

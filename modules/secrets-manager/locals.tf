@@ -12,7 +12,7 @@ locals {
   /*
     * 1. Secrets configuration.
       - Configure the basic settings of the secret.
-      - Other options, are managed in their own objects, and are related to their secrets through the 'name' attribute.
+      - Other options, are managed in their own objects, and are related to their adapter through the 'name' attribute.
   */
   secrets_config_normalised = !local.is_enabled ? [] : [
     for secret in var.secrets_config : {
@@ -36,7 +36,7 @@ locals {
   /*
     * 2. Enforced prefixes
       - Opinionated configuration. Allow the secret to be created following a 'path' convention.
-      - Other options, are managed in their own objects, and are related to their secrets through the 'name' attribute.
+      - Other options, are managed in their own objects, and are related to their adapter through the 'name' attribute.
   */
   prefixes_normalised = !local.is_enforced_prefixes_set ? [] : [
     for prefix in var.enforced_prefixes : {
@@ -52,7 +52,7 @@ locals {
   /*
   * 3. Secret replication
     - Replicate the secret into a new AWS region.
-    - Other options, are managed in their own objects, and are related to their secrets through the 'name' attribute.
+    - Other options, are managed in their own objects, and are related to their adapter through the 'name' attribute.
   */
 
   replication_normalised = !local.is_replication_set ? [] : [
@@ -70,7 +70,7 @@ locals {
   #  /*
   #  * 4. Secret rotation
   #    - Rotate the secret.
-  #    - Other options, are managed in their own objects, and are related to their secrets through the 'name' attribute.
+  #    - Other options, are managed in their own objects, and are related to their adapter through the 'name' attribute.
   #  */
   #  rotation_normalised = !local.is_rotation_set ? [] : [
   #    for rotation in var.secrets_rotation_config : {
