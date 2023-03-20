@@ -128,11 +128,6 @@ output "tags_set" {
 Custom outputs
 -------------------------------------
 */
-output "aws_region_for_deploy" {
-  value       = local.aws_region_to_deploy
-  description = "The AWS region where the module is deployed."
-}
-
 output "secret_id" {
   value       = [for secret in aws_secretsmanager_secret.this : secret.id]
   description = "The ID of the secret."
@@ -196,7 +191,6 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_aws_region_for_deploy"></a> [aws\_region\_for\_deploy](#output\_aws\_region\_for\_deploy) | The AWS region where the module is deployed. |
 | <a name="output_aws_region_for_deploy_this"></a> [aws\_region\_for\_deploy\_this](#output\_aws\_region\_for\_deploy\_this) | The AWS region where the module is deployed. |
 | <a name="output_is_enabled"></a> [is\_enabled](#output\_is\_enabled) | Whether the module is enabled or not. |
 | <a name="output_secret_arn"></a> [secret\_arn](#output\_secret\_arn) | The ARN of the secret. |

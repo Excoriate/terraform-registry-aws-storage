@@ -18,11 +18,6 @@ output "tags_set" {
 Custom outputs
 -------------------------------------
 */
-output "aws_region_for_deploy" {
-  value       = local.aws_region_to_deploy
-  description = "The AWS region where the module is deployed."
-}
-
 output "secret_id" {
   value       = [for secret in aws_secretsmanager_secret.this : secret.id]
   description = "The ID of the secret."

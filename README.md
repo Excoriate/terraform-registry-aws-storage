@@ -43,10 +43,11 @@ The documentation is **automatically generated** by [terraform-docs](https://ter
 
 ### Capabilities
 
-| Module                 | Status   | Description                                                                                               |
-|------------------------|----------|-----------------------------------------------------------------------------------------------------------|
-| `aws-secrets-manager`  | Stable ✅ | Create secrets in AWS, using secrets manager. It includes a CLI to manage secret values outside terraform |
-| `aws-secrets-dynamodb` | Stable ✅ | Create an AWS DynamoDB table, with a set of common parameters.                                            |
+| Module                            | Status   | Description                                                                                               |
+|-----------------------------------|----------|-----------------------------------------------------------------------------------------------------------|
+| `aws-secrets-manager`             | Stable ✅ | Create secrets in AWS, using secrets manager. It includes a CLI to manage secret values outside terraform |
+| `aws-secrets-manager-permissions` | Stable ✅ | Create custom IAM policies, and attachments for AWS secrets created through Secrets manager.              |
+| `aws-secrets-dynamodb`            | Stable ✅ | Create an AWS DynamoDB table, with a set of common parameters.                                            |
 
 ### Getting Started
 

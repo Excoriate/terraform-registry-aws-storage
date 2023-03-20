@@ -9,11 +9,6 @@ output "is_enabled" {
 Custom outputs
 -------------------------------------
 */
-output "aws_region_for_deploy" {
-  value       = module.main_module.aws_region_for_deploy
-  description = "The AWS region where the module is deployed."
-}
-
 output "secret_id" {
   value       = module.main_module.secret_id
   description = "The ID of the secret."
