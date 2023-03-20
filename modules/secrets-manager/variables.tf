@@ -70,17 +70,17 @@ For more details about this specific configuration, please visit the official AW
   default     = null
 }
 
-variable "secrets_rotation_config" {
-  type = list(object({
-    name                     = string
-    rotation_lambda_arn      = string
-    automatically_after_days = optional(number, null)
-  }))
-  description = <<EOF
-  A list of objects with the following attributes:
-  - rotation_lambda_arn: the ARN of the Lambda function that can rotate the secret
-  - automatically_after_days: the number of days after the previous rotation when Secrets Manager triggers the next automatic rotation. If not provided, the rotation will be triggered manually.
-For more details about this specific configuration, please visit the official AWS documentation at https://docs.aws.amazon.com/secretsmanager/latest/userguide/rotating-secrets.html
-  EOF
-  default     = null
-}
+#variable "secrets_rotation_config" {
+#  type = list(object({
+#    name                     = string
+#    rotation_lambda_arn      = string
+#    automatically_after_days = optional(number, null)
+#  }))
+#  description = <<EOF
+#  A list of objects with the following attributes:
+#  - rotation_lambda_arn: the ARN of the Lambda function that can rotate the secret
+#  - automatically_after_days: the number of days after the previous rotation when Secrets Manager triggers the next automatic rotation. If not provided, the rotation will be triggered manually.
+#For more details about this specific configuration, please visit the official AWS documentation at https://docs.aws.amazon.com/secretsmanager/latest/userguide/rotating-secrets.html
+#  EOF
+#  default     = null
+#}

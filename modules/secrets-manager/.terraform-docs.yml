@@ -20,6 +20,24 @@ content: |-
     {{ include "../../examples/secrets-manager/basic/main.tf" }}
     ```
 
+
+    Simple recipe:
+    ```hcl
+    {{ include "../../examples/secrets-manager/basic/config/fixtures.tfvars" }}
+    ```
+
+    Multiple secrets created, each with custom configurations.
+    ```hcl
+    {{ include "../../examples/secrets-manager/basic/config/fixtures-multiple.tfvars" }}
+    ```
+    Multiple secrets, some of them with enforced prefixes (for their paths)
+    ```hcl
+    {{ include "../../examples/secrets-manager/basic/config/fixtures-enforced-prefixes.tfvars" }}
+    ```
+    Secrets with replication enabled
+    ```hcl
+    {{ include "../../examples/secrets-manager/basic/config/fixtures-replication.tfvars" }}
+    ```
     For module composition, It's recommended to take a look at the module's `outputs` to understand what's available:
     ```hcl
     {{ include "outputs.tf" }}

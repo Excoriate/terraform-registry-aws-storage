@@ -6,8 +6,8 @@ locals {
   */
   is_enabled               = !var.is_enabled ? false : var.secrets_config == null ? false : length(var.secrets_config) > 0
   is_enforced_prefixes_set = !local.is_enabled ? false : var.enforced_prefixes == null ? false : length(var.enforced_prefixes) > 0
-  is_rotation_set          = !local.is_enabled ? false : var.secrets_rotation_config == null ? false : length(var.secrets_rotation_config) > 0
-  is_replication_set       = !local.is_enabled ? false : var.secrets_replication_config == null ? false : length(var.secrets_replication_config) > 0
+  #  is_rotation_set          = !local.is_enabled ? false : var.secrets_rotation_config == null ? false : length(var.secrets_rotation_config) > 0
+  is_replication_set = !local.is_enabled ? false : var.secrets_replication_config == null ? false : length(var.secrets_replication_config) > 0
 
   /*
     * 1. Secrets configuration.
@@ -24,7 +24,8 @@ locals {
       policy                  = secret["policy"] == null ? null : trimspace(secret["policy"])
 
       // Feature flags
-      is_prefix_enforced = !local.is_enforced_prefixes_set ? false : lookup(local.prefixes_create, secret.name, null) == null ? false : true
+      is_prefix_enforced     = !local.is_enforced_prefixes_set ? false : lookup(local.prefixes_create, secret.name, null) == null ? false : true
+      is_replication_enabled = !local.is_replication_set ? false : lookup(local.replication_create, secret.name, null) == null ? false : true
     }
   ]
 
@@ -47,4 +48,39 @@ locals {
   prefixes_create = !local.is_enforced_prefixes_set ? {} : {
     for prefix in local.prefixes_normalised : prefix["name"] => prefix
   }
+
+  /*
+  * 3. Secret replication
+    - Replicate the secret into a new AWS region.
+    - Other options, are managed in their own objects, and are related to their secrets through the 'name' attribute.
+  */
+
+  replication_normalised = !local.is_replication_set ? [] : [
+    for replication in var.secrets_replication_config : {
+      name       = trimspace(replication.name)
+      region     = trimspace(replication.region)
+      kms_key_id = replication["kms_key_id"] == null ? null : trimspace(replication["kms_key_id"])
+    }
+  ]
+
+  replication_create = !local.is_replication_set ? {} : {
+    for replication in local.replication_normalised : replication["name"] => replication
+  }
+
+  #  /*
+  #  * 4. Secret rotation
+  #    - Rotate the secret.
+  #    - Other options, are managed in their own objects, and are related to their secrets through the 'name' attribute.
+  #  */
+  #  rotation_normalised = !local.is_rotation_set ? [] : [
+  #    for rotation in var.secrets_rotation_config : {
+  #      name = trimspace(rotation.name)
+  #      rotation_lambda_arn = rotation["rotation_lambda_arn"] == null ? null : trimspace(rotation["rotation_lambda_arn"])
+  #      automatically_after_days = rotation["automatically_after_days"] == null ? 30 : rotation["automatically_after_days"]
+  #    }
+  #  ]
+  #
+  #  rotation_create = !local.is_rotation_set ? {} : {
+  #    for rotation in local.rotation_normalised : rotation["name"] => rotation
+  #  }
 }
