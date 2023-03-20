@@ -1,5 +1,5 @@
 data "aws_iam_policy_document" "allow" {
-  for_each = { for k, v in local.secret_permissions_create : k => v if !v["is_deny_enabled"] }
+  for_each = { for k, v in local.secret_permissions_create : k => v if v["allow"] && !v["deny"] }
   statement {
     sid       = "AllowSecretsManager"
     actions   = each.value["permissions"]
@@ -9,7 +9,7 @@ data "aws_iam_policy_document" "allow" {
 }
 
 data "aws_iam_policy_document" "deny" {
-  for_each = { for k, v in local.secret_permissions_create : k => v if v["is_deny_enabled"] }
+  for_each = { for k, v in local.secret_permissions_create : k => v if v["deny"] }
   statement {
     sid       = "DenySecretsManager"
     actions   = each.value["permissions"]
@@ -19,7 +19,7 @@ data "aws_iam_policy_document" "deny" {
 }
 
 resource "aws_iam_policy" "allow" {
-  for_each    = { for k, v in local.secret_permissions_create : k => v if !v["is_deny_enabled"] }
+  for_each    = { for k, v in local.secret_permissions_create : k => v if v["allow"] && !v["deny"] }
   name        = format("secret-policy-%s", each.value["name"])
   description = format("Secrets Manager policy (allow) for %s", each.value["name"])
   policy      = data.aws_iam_policy_document.allow[each.key].json
@@ -27,7 +27,7 @@ resource "aws_iam_policy" "allow" {
 }
 
 resource "aws_iam_policy" "deny" {
-  for_each    = { for k, v in local.secret_permissions_create : k => v if v["is_deny_enabled"] }
+  for_each    = { for k, v in local.secret_permissions_create : k => v if v["deny"] }
   name        = format("secret-policy-%s", each.value["name"])
   description = format("Secrets Manager policy (deny) for %s", each.value["name"])
   policy      = data.aws_iam_policy_document.deny[each.key].json
@@ -41,7 +41,7 @@ resource "aws_iam_policy" "deny" {
     - IAM role ARN dictates that it should be used as is.
 */
 resource "aws_iam_role_policy_attachment" "attachment" {
-  for_each   = { for k, v in local.secret_permissions_create : k => v if v["iam_role_name"] != null || v["iam_role_arn"] != null }
-  policy_arn = each.value["deny"] ? aws_iam_policy.deny[each.key].arn : aws_iam_policy.allow[each.key].arn
-  role       = each.value["is_lookup_iam_role_enabled"] ? data.aws_iam_role.this[each.value["name"]].name : each.value["iam_role_arn"]
+  for_each   = local.attachments_filtered_role_arn
+  policy_arn = each.value["policy_arn"]
+  role       = each.value["role"]
 }

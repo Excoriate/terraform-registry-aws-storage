@@ -29,8 +29,8 @@ variable "secret_permissions" {
     permissions   = optional(list(string), null)
     allow         = optional(bool, true)
     deny          = optional(bool, false)
-    iam_role_name = optional(string, null)
-    iam_role_arn  = optional(string, null)
+    iam_role_name = optional(string, "NOT_SET")
+    iam_role_arn  = optional(string, "NOT_SET")
   }))
   description = <<EOF
 Configure a set of permissions for an AWS secrets manager secret. If the 'iam_role_to_attach' is not provided, no
