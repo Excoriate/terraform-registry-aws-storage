@@ -2,11 +2,14 @@ package secrets
 
 import (
   "context"
+  "errors"
   "fmt"
   "github.com/Excoriate/terraform-registry-aws-storage/adapter"
+  "github.com/Excoriate/terraform-registry-aws-storage/display"
   "github.com/Excoriate/terraform-registry-aws-storage/internal/logger"
   "github.com/aws/aws-sdk-go-v2/aws"
   "github.com/aws/aws-sdk-go-v2/service/secretsmanager"
+  "strings"
 )
 
 type Secret struct {
@@ -14,6 +17,12 @@ type Secret struct {
   Name      string
   Value     string
   VersionId string
+}
+
+type SecretWithNoValue struct {
+  AWSRegion string
+  ARN       string
+  Name      string
 }
 
 type Reader struct {
@@ -32,6 +41,7 @@ func (r *Reader) ListSecrets() ([]Secret, error) {
 
   input := &secretsmanager.ListSecretsInput{}
   var secrets []Secret
+  var secretsPreFetch []SecretWithNoValue
 
   for {
     output, err := c.ListSecrets(context.TODO(), input)
@@ -41,19 +51,42 @@ func (r *Reader) ListSecrets() ([]Secret, error) {
     }
 
     for _, secret := range output.SecretList {
-      secretValue, errList := c.GetSecretValue(context.TODO(), &secretsmanager.GetSecretValueInput{
-        SecretId: secret.Name,
+      secretsPreFetch = append(secretsPreFetch, SecretWithNoValue{
+        ARN:       *secret.ARN,
+        AWSRegion: r.Client.Region,
+        Name:      *secret.Name,
       })
+    }
+
+    if len(secretsPreFetch) == 0 {
+      r.Logger.LogError("AWS Secrets Manager", "No secrets found", nil)
+      return nil, errors.New(fmt.Sprintf("No secrets found in region %s", r.Client.Region))
+    }
+
+    for _, secret := range secretsPreFetch {
+      secretValue, errList := c.GetSecretValue(context.TODO(), &secretsmanager.GetSecretValueInput{
+        SecretId: aws.String(secret.ARN),
+      })
+
+      var secretValueNormalised string
+      var versionNormalised string
       if errList != nil {
-        r.Logger.LogError("AWS Secrets Manager", "Failed to retrieve secret value", errList)
-        continue
+        display.UXInfo("LIST-VALUES", fmt.Sprintf("Failed to retrieve secret value for secret %s."+
+          " "+
+          "Most likely it does not have a value set yet", secret.Name))
+        r.Logger.LogWarn("AWS Secrets Manager", "Failed to retrieve secret value", errList)
+        secretValueNormalised = ""
+        versionNormalised = ""
+      } else {
+        secretValueNormalised = *secretValue.SecretString
+        versionNormalised = *secretValue.VersionId
       }
 
       secrets = append(secrets, Secret{
         AWSRegion: r.Client.Region,
-        Name:      *secret.Name,
-        Value:     *secretValue.SecretString,
-        VersionId: *secretValue.VersionId,
+        Name:      secret.Name,
+        Value:     secretValueNormalised,
+        VersionId: versionNormalised,
       })
     }
 
@@ -78,16 +111,37 @@ func (r *Reader) GetSecret(secretName string) (*Secret, error) {
     SecretId: aws.String(secretName),
   })
 
+  var secretValueNormalised string
+  var versionNormalised string
+  var secretNameNormalised string
+
   if err != nil {
-    r.Logger.LogError("AWS Secrets Manager", "Failed to retrieve secret value", err)
-    return nil, err
+    msg := err.Error()
+    if strings.Contains(msg,
+      "Secrets Manager can't find the specified secret value for staging label: AWSCURRENT") {
+      r.Logger.LogWarn("AWS Secrets Manager", "Secret value not found. Means it's an empty secret",
+        err)
+
+      secretValueNormalised = ""
+      versionNormalised = ""
+      secretNameNormalised = secretName
+    } else {
+      r.Logger.LogError("AWS Secrets Manager", "Failed to retrieve secret value", err)
+      return nil, err
+    }
+  } else {
+    secretValueNormalised = *secretValue.SecretString
+    versionNormalised = *secretValue.VersionId
+    secretNameNormalised = *secretValue.Name
   }
 
   secret := &Secret{
     AWSRegion: r.Client.Region,
-    Name:      *secretValue.Name,
-    Value:     *secretValue.SecretString,
-    VersionId: *secretValue.VersionId,
+    Name:      secretNameNormalised,
+    //Value:     *secretValue.SecretString,
+    //VersionId: *secretValue.VersionId,
+    Value:     secretValueNormalised,
+    VersionId: versionNormalised,
   }
 
   return secret, nil

@@ -19,6 +19,12 @@ func PopulateSecret(args PopulateActionArgs) error {
 
   secret, err := getSecret(args.AWSRegion, args.SecretName, &loggerFactory)
 
+  if err != nil {
+    display.UXError("POPULATE FAILED", fmt.Sprintf("Cant find the secret %s. "+
+      "Are you sure it's correct? check your credentials, region, etc... ", args.SecretName), err)
+    return err
+  }
+
   if secret.Name == "" {
     display.UXError("POPULATE", fmt.Sprintf("Failed to find secret with name: %s",
       args.SecretName), err)
@@ -27,8 +33,8 @@ func PopulateSecret(args PopulateActionArgs) error {
 
   if secret.Value != "" {
     if secret.Value == args.SecretValue {
-      display.UXWarning(fmt.Sprintf("POPULATE: %s", args.SecretName),
-        fmt.Sprintf("Secret value already set: %s", args.SecretValue))
+      display.UXWarning("POPULATE",
+        fmt.Sprintf("Secret value already set: %s for secret %s", args.SecretValue, args.SecretName))
       return nil
     }
 
@@ -64,6 +70,9 @@ func PopulateSecret(args PopulateActionArgs) error {
 
     return nil
   }
+
+  display.UXInfo("POPULATE", fmt.Sprintf("There's no value yet set for the secret %s. Setting it to %s",
+    secret.Name, args.SecretValue))
 
   if _, mutationErr := mutateSecret(args.AWSRegion, secret.Name,
     args.SecretValue, &loggerFactory); mutationErr != nil {
