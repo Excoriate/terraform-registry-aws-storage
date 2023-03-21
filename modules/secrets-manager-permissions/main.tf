@@ -20,7 +20,7 @@ data "aws_iam_policy_document" "deny" {
 
 resource "aws_iam_policy" "allow" {
   for_each    = { for k, v in local.secret_permissions_create : k => v if v["allow"] && !v["deny"] }
-  name        = format("secret-policy-%s", each.value["name"])
+  name        = format("secret-policy-%s", each.value["policy_name"])
   description = format("Secrets Manager policy (allow) for %s", each.value["name"])
   policy      = data.aws_iam_policy_document.allow[each.key].json
   tags        = var.tags
@@ -28,7 +28,7 @@ resource "aws_iam_policy" "allow" {
 
 resource "aws_iam_policy" "deny" {
   for_each    = { for k, v in local.secret_permissions_create : k => v if v["deny"] }
-  name        = format("secret-policy-%s", each.value["name"])
+  name        = format("secret-policy-%s", each.value["policy_name"])
   description = format("Secrets Manager policy (deny) for %s", each.value["name"])
   policy      = data.aws_iam_policy_document.deny[each.key].json
   tags        = var.tags

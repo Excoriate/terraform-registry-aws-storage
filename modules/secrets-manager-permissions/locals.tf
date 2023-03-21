@@ -15,6 +15,7 @@ locals {
   secret_permissions_normalised = !local.is_enabled ? [] : [for permission in var.secret_permissions : {
     name          = lower(trimspace(permission.name))
     secret_name   = lower(trimspace(permission.secret_name))
+    policy_name   = replace(lower(trimspace(permission.secret_name)), "/", "-")
     permissions   = permission["permissions"] == null ? ["*"] : length(permission["permissions"]) == 0 ? ["*"] : [for p in permission["permissions"] : trimspace(format("secretsmanager:%s", p))]
     allow         = permission["allow"] == null ? true : permission["allow"]
     deny          = permission["deny"] == null ? false : permission["deny"]
