@@ -1,0 +1,66 @@
+---
+formatter: markdown table
+
+header-from: main.tf
+content: |-
+    # ☁️ AWS Dynamo db table
+    ## Description
+    {{ .Header }}
+
+    This module creates a DynamoDB table with the following features:
+    🚀 Create a DynamoDB table with a single partition key.
+    🚀 Create a DynamoDB table with a single partition key and a single sort key.
+    🚀 Create a DynamoDB table with a single partition key and multiple sort keys.
+
+    ---
+    ## Example
+    Examples of this module's usage are available in the [examples](./examples) folder.
+
+    ```hcl
+    {{ include "../../../examples/dynamodb/dynamodb-table/basic/main.tf" }}
+    ```
+
+    Simple recipe:
+    ```hcl
+    {{ include "../../../examples/dynamodb/dynamodb-table/basic/config/fixtures.tfvars" }}
+    ```
+    An example that shows a full configuration, with TTL, attributes and indexes:
+    ```hcl
+    {{ include "../../../examples/dynamodb/dynamodb-table/basic/config/fixtures-ttl-with-attributes.tfvars" }}
+    ```
+    An example that implements server side encryption:
+    ```hcl
+    {{ include "../../../examples/dynamodb/dynamodb-table/basic/config/fixtures-server-side-encryption.tfvars" }}
+    ```
+
+    ```
+    For module composition, It's recommended to take a look at the module's `outputs` to understand what's available:
+    ```hcl
+    {{ include "outputs.tf" }}
+    ```
+    ---
+
+    ## Module's documentation
+    (This documentation is auto-generated using [terraform-docs](https://terraform-docs.io))
+    {{ .Providers }}
+
+    {{ .Modules }}
+
+    {{ .Resources }}
+
+    {{ .Requirements }}
+
+    {{ .Inputs }}
+
+    {{ .Outputs }}
+
+output:
+    file: README.md
+    mode: inject
+    template: |-
+        <!-- BEGIN_TF_DOCS -->
+        {{ .Content }}
+        <!-- END_TF_DOCS -->
+settings:
+    anchor: true
+    color: true

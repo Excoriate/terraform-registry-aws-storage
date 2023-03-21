@@ -52,5 +52,6 @@
 # Automatically generated. Do not modify. Check DevDex/scripts/aws/set-aws-creds.sh for more details...
 .env.sandbox.aws
 
+app/secret-manager-filler/cmd/secret-manager-filler
 
 /DevEx/scripts/config/generator/gen-cli
