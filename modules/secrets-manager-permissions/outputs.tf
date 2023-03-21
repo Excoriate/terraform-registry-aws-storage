@@ -18,3 +18,32 @@ output "tags_set" {
 Custom outputs
 -------------------------------------
 */
+output "iam_policy_allow_id" {
+  value       = [for policy in aws_iam_policy.allow : policy.id]
+  description = "The secret IAM policy when the 'allow' option is enabled"
+}
+
+output "iam_policy_deny_id" {
+  value       = [for policy in aws_iam_policy.deny : policy.id]
+  description = "The secret IAM policy when the 'deny' option is enabled"
+}
+
+output "iam_policy_allow_arn" {
+  value       = [for policy in aws_iam_policy.allow : policy.arn]
+  description = "The secret IAM policy when the 'allow' option is enabled"
+}
+
+output "iam_policy_deny_arn" {
+  value       = [for policy in aws_iam_policy.deny : policy.arn]
+  description = "The secret IAM policy when the 'deny' option is enabled"
+}
+
+output "iam_policy_allow_name" {
+  value       = [for policy in aws_iam_policy.allow : policy.name]
+  description = "The secret IAM policy when the 'allow' option is enabled"
+}
+
+output "iam_policy_deny_name" {
+  value       = [for policy in aws_iam_policy.deny : policy.name]
+  description = "The secret IAM policy when the 'deny' option is enabled"
+}

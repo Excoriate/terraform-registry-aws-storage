@@ -95,6 +95,12 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_aws_region_for_deploy_this"></a> [aws\_region\_for\_deploy\_this](#output\_aws\_region\_for\_deploy\_this) | The AWS region where the module is deployed. |
+| <a name="output_iam_policy_allow_arn"></a> [iam\_policy\_allow\_arn](#output\_iam\_policy\_allow\_arn) | The secret IAM policy when the 'allow' option is enabled |
+| <a name="output_iam_policy_allow_id"></a> [iam\_policy\_allow\_id](#output\_iam\_policy\_allow\_id) | The secret IAM policy when the 'allow' option is enabled |
+| <a name="output_iam_policy_allow_name"></a> [iam\_policy\_allow\_name](#output\_iam\_policy\_allow\_name) | The secret IAM policy when the 'allow' option is enabled |
+| <a name="output_iam_policy_deny_arn"></a> [iam\_policy\_deny\_arn](#output\_iam\_policy\_deny\_arn) | The secret IAM policy when the 'deny' option is enabled |
+| <a name="output_iam_policy_deny_id"></a> [iam\_policy\_deny\_id](#output\_iam\_policy\_deny\_id) | The secret IAM policy when the 'deny' option is enabled |
+| <a name="output_iam_policy_deny_name"></a> [iam\_policy\_deny\_name](#output\_iam\_policy\_deny\_name) | The secret IAM policy when the 'deny' option is enabled |
 | <a name="output_is_enabled"></a> [is\_enabled](#output\_is\_enabled) | Whether the module is enabled or not. |
 | <a name="output_tags_set"></a> [tags\_set](#output\_tags\_set) | The tags set for the module. |
 <!-- END_TF_DOCS -->
