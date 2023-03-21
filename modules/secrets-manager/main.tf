@@ -7,7 +7,7 @@ resource "aws_secretsmanager_secret" "this" {
   policy                  = each.value["policy"]
 
   dynamic "replica" {
-    for_each = each.value["is_replication_enabled"] ? { for k, v in local.replication_create : k => v if v["name"] == each.key } : {}
+    for_each = local.is_replication_set ? { for k, v in local.replication_create : k => v if v["name"] == each.key } : {}
     iterator = replica
     content {
       region     = replica.value["region"]

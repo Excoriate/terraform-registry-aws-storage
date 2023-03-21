@@ -24,8 +24,7 @@ locals {
       policy                  = secret["policy"] == null ? null : trimspace(secret["policy"])
 
       // Feature flags
-      is_prefix_enforced     = !local.is_enforced_prefixes_set ? false : lookup(local.prefixes_create, secret.name, null) == null ? false : true
-      is_replication_enabled = !local.is_replication_set ? false : lookup(local.replication_create, secret.name, null) == null ? false : true
+      is_prefix_enforced = !local.is_enforced_prefixes_set ? false : lookup(local.prefixes_create, secret.name, null) == null ? false : true
     }
   ]
 
@@ -64,7 +63,7 @@ locals {
   ]
 
   replication_create = !local.is_replication_set ? {} : {
-    for replication in local.replication_normalised : replication["name"] => replication
+    for replication in local.replication_normalised : replication["region"] => replication
   }
 
   #  /*
