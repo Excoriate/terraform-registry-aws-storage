@@ -8,10 +8,12 @@ content: |-
     {{ .Header }}
 
     This module creates a S3 bucket with the following features:
-    🚀 **Versioning** - Versioning is enabled by default. This can be disabled by setting `versioning_enabled` to `false`.
-    🚀 **Server side encryption** - Server side encryption is enabled by default. This can be disabled by setting `server_side_encryption_enabled` to `false`.
-    🚀 **Access logging** - Access logging is enabled by default. This can be disabled by setting `access_logging_enabled` to `false`.
-    🚀 **Lifecycle rules** - Lifecycle rules are enabled by default. This can be disabled by setting `lifecycle_rules_enabled` to `false`.
+
+    * 🚀 **Versioning** - Versioning is enabled by default. This can be disabled by setting `versioning_enabled` to `false`.
+    * 🚀 **Server side encryption** - Server side encryption is enabled by default. This can be disabled by setting `server_side_encryption_enabled` to `false`.
+    * 🚀 **Access logging** - Access logging is enabled by default. This can be disabled by setting `access_logging_enabled` to `false`.
+    * 🚀 **Transfer acceleration** - Transfer acceleration is enabled by default. This can be disabled by setting `transfer_acceleration_enabled` to `false`.
+    * 🚀 **Custom permissions** - Custom permissions can be added by setting `permissions` to a list of `aws_iam_policy_document` resources.
 
     ---
     ## Example
@@ -26,6 +28,14 @@ content: |-
     {{ include "../../../examples/s3/s3-storage/basic/config/fixtures.tfvars" }}
     ```
 
+    An example that implement an S3 bucket, with custom options, such as 'transfer acceleration' and 'versioning':
+    ```hcl
+    {{ include "../../../examples/s3/s3-storage/basic/config/fixtures-transfer-acceleration.tfvars" }}
+    ```
+
+    An example that implement an S3 bucket, with custom permissions, even attaching specific statements to form a dynamic policy:
+    ```hcl
+    {{ include "../../../examples/s3/s3-storage/basic/config/fixtures-permissions-with-extra-policies.tfvars" }}
     ```
     For module composition, It's recommended to take a look at the module's `outputs` to understand what's available:
     ```hcl

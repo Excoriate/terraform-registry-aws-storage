@@ -15,27 +15,25 @@ bucket_permissions = [
     name                          = "with-permissions"
     enable_encrypted_uploads_only = true
     enable_ssl_requests_only      = true
+    // Custom policy passed.
     iam_policy_documents_to_attach = [
       {
-        name            = "extra-policy"
-        policy_document = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "AllowPublicRead",
-      "Effect": "Allow",
-      "Principal": "*",
-      "Action": [
-        "s3:GetObject"
-      ],
-      "Resource": [
-        "*"
-      ]
-    }
-    ]
-  }
-EOF
+        sid     = "TestAtttachedStatement"
+        effect  = "Allow"
+        actions = ["s3:PutObject"]
+        principals = [
+          {
+            type        = "Service"
+            identifiers = ["ecs.amazonaws.com"]
+          }
+        ]
+        conditions = [
+          {
+            test     = "StringEquals"
+            variable = "s3:x-amz-server-side-encryption"
+            values   = ["AES256"]
+          }
+        ]
       }
     ]
   }

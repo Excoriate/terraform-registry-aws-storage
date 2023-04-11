@@ -65,10 +65,33 @@ data "aws_iam_policy_document" "this" {
       }
     }
   }
-}
 
-data "aws_iam_policy_document" "merged_policy" {
-  for_each                  = local.bucket_permissions_cfg_map
-  source_policy_documents   = [data.aws_iam_policy_document.this[each.key].json]
-  override_policy_documents = length(each.value["iam_policy_documents_to_attach"]) > 0 ? [for policy in each.value["iam_policy_documents_to_attach"] : policy["policy_document"]] : []
+  // Custom statements
+  dynamic "statement" {
+    for_each = length(each.value["iam_policy_documents_to_attach"]) > 0 ? each.value["iam_policy_documents_to_attach"] : []
+    content {
+      sid       = statement.value["sid"]
+      effect    = statement.value["effect"]
+      actions   = statement.value["actions"]
+      resources = [aws_s3_bucket.this[each.key].arn, format("%s/*", aws_s3_bucket.this[each.key].arn)]
+
+      dynamic "principals" {
+        for_each = length(statement.value["principals"]) > 0 ? statement.value["principals"] : []
+        content {
+          identifiers = principals.value["identifiers"]
+          type        = principals.value["type"]
+        }
+      }
+
+      dynamic "condition" {
+        for_each = length(statement.value["conditions"]) > 0 ? statement.value["conditions"] : []
+        iterator = c
+        content {
+          test     = c.value["test"]
+          values   = c.value["values"]
+          variable = c.value["variable"]
+        }
+      }
+    }
+  }
 }

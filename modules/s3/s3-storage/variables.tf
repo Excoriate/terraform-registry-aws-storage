@@ -69,8 +69,18 @@ variable "bucket_permissions" {
     enable_encrypted_uploads_only = optional(bool, false)
     enable_ssl_requests_only      = optional(bool, false)
     iam_policy_documents_to_attach = optional(list(object({
-      name            = string
-      policy_document = string
+      sid     = string
+      effect  = string
+      actions = list(string)
+      principals = optional(list(object({
+        type        = string
+        identifiers = list(string)
+      })), [])
+      conditions = optional(list(object({
+        test     = string
+        variable = string
+        values   = list(string)
+      })), [])
     })), [])
   }))
   default     = null
@@ -80,7 +90,7 @@ are currently supported:
 - name: A terraform identifier. It shouldn't be used for naming this resource.
 - enable_encrypted_uploads_only: A boolean that indicates if the bucket will have encrypted uploads only enabled.
 - enable_ssl_requests_only: A boolean that indicates if the bucket will have SSL requests only enabled.
-- iam_policy_documents_to_attach: A list of IAM policy documents to attach to the bucket. The policy documents should be
+- iam_policy_documents_to_attach: A list of IAM policy documents to attach to the bucket. Each policy document
 in JSON format.
 EOF
 }
