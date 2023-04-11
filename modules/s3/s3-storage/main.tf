@@ -36,3 +36,14 @@ resource "aws_s3_bucket_policy" "this" {
   bucket   = join("", [for k, v in aws_s3_bucket.this : v.bucket if k == each.key])
   policy   = data.aws_iam_policy_document.this[each.key].json
 }
+
+
+resource "aws_s3_bucket_public_access_block" "this" {
+  for_each = { for k, v in local.bucket_cfg_map : k => v if v["block_public_access"] == true }
+  bucket   = join("", [for k, v in aws_s3_bucket.this : v.bucket if k == each.key])
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}

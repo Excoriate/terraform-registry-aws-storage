@@ -28,6 +28,7 @@ variable "bucket_config" {
     bucket_name         = optional(string, null) // If it's set in null, it'll take the 'name' value.
     force_destroy       = optional(bool, false)
     object_lock_enabled = optional(bool, false)
+    block_public_access = optional(bool, true)
   }))
   default     = null
   description = <<EOF
@@ -36,8 +37,9 @@ are currently supported:
 - name: A terraform identifier. It shouldn't be used for naming this resource. However, if the 'bucket_name'
 attribute is not set, it'll be used as the bucket name.
 - bucket_name: The name of the bucket. If it's not set, the 'name' attribute will be used.
-- force_destroy: A boolean that indicates if the bucket can be destroyed even if it contains objects
+- force_destroy: A boolean that indicates if the bucket can be destroyed even if it contains objects.
 - object_lock_enabled: A boolean that indicates if the bucket will have object lock enabled.
+- block_public_access: A boolean that indicates if the bucket will have public access blocked.
 For a more detailed documentation about this resource, please refer to the following link:
 https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket
 EOF

@@ -16,6 +16,7 @@ locals {
     bucket_name         = lookup(bucket, "bucket_name", trimspace(bucket.name))
     force_destroy       = bucket["force_destroy"] == null ? false : bucket["force_destroy"]
     object_lock_enabled = bucket["object_lock_enabled"] == null ? false : bucket["object_lock_enabled"]
+    block_public_access = bucket["block_public_access"] == null ? false : bucket["block_public_access"]
   }]
 
   bucket_cfg_map = !local.is_enabled ? {} : { for bucket in local.bucket_cfg_normalised : bucket["name"] => bucket }
@@ -71,5 +72,4 @@ locals {
   ]
 
   bucket_permissions_cfg_map = !local.is_bucket_permissions_enabled ? {} : { for p in local.bucket_permissions_cfg_normalised : p["name"] => p }
-
 }
