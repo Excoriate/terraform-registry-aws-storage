@@ -1,0 +1,59 @@
+---
+formatter: markdown table
+
+header-from: main.tf
+content: |-
+    # ☁️ AWS S3 Object storage module
+    ## Description
+    {{ .Header }}
+
+    This module creates a S3 bucket with the following features:
+    🚀 **Versioning** - Versioning is enabled by default. This can be disabled by setting `versioning_enabled` to `false`.
+    🚀 **Server side encryption** - Server side encryption is enabled by default. This can be disabled by setting `server_side_encryption_enabled` to `false`.
+    🚀 **Access logging** - Access logging is enabled by default. This can be disabled by setting `access_logging_enabled` to `false`.
+    🚀 **Lifecycle rules** - Lifecycle rules are enabled by default. This can be disabled by setting `lifecycle_rules_enabled` to `false`.
+
+    ---
+    ## Example
+    Examples of this module's usage are available in the [examples](./examples) folder.
+
+    ```hcl
+    {{ include "../../../examples/s3/s3-storage/basic/main.tf" }}
+    ```
+
+    Simple recipe:
+    ```hcl
+    {{ include "../../../examples/s3/s3-storage/basic/config/fixtures.tfvars" }}
+    ```
+
+    ```
+    For module composition, It's recommended to take a look at the module's `outputs` to understand what's available:
+    ```hcl
+    {{ include "outputs.tf" }}
+    ```
+    ---
+
+    ## Module's documentation
+    (This documentation is auto-generated using [terraform-docs](https://terraform-docs.io))
+    {{ .Providers }}
+
+    {{ .Modules }}
+
+    {{ .Resources }}
+
+    {{ .Requirements }}
+
+    {{ .Inputs }}
+
+    {{ .Outputs }}
+
+output:
+    file: README.md
+    mode: inject
+    template: |-
+        <!-- BEGIN_TF_DOCS -->
+        {{ .Content }}
+        <!-- END_TF_DOCS -->
+settings:
+    anchor: true
+    color: true
