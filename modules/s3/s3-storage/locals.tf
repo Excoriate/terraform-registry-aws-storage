@@ -47,4 +47,12 @@ locals {
   } if bucket["enable_versioning"] == true]
 
   bucket_versioning_cfg_map = { for bucket in local.bucket_versioning_cfg_normalised : bucket["name"] => bucket }
+
+  // 3. Enable default server side encryption
+  bucket_default_server_side_encryption_cfg_normalised = [for bucket in local.bucket_options_normalised : {
+    name                                  = bucket["name"]
+    enable_default_server_side_encryption = bucket["enable_default_server_side_encryption"]
+  } if bucket["enable_default_server_side_encryption"] == true]
+
+  bucket_default_server_side_encryption_cfg_map = { for bucket in local.bucket_default_server_side_encryption_cfg_normalised : bucket["name"] => bucket }
 }

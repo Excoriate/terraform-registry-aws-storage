@@ -19,3 +19,14 @@ resource "aws_s3_bucket_versioning" "this" {
     status = "Enabled"
   }
 }
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
+  for_each = local.bucket_default_server_side_encryption_cfg_map
+  bucket   = join("", [for k, v in aws_s3_bucket.this : v.bucket if k == each.key])
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
