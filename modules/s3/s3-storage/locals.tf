@@ -20,7 +20,7 @@ locals {
   bucket_cfg_map = !local.is_enabled ? {} : { for bucket in local.bucket_cfg_normalised : bucket["name"] => bucket }
 
   /*
-    * Bucket options
+    * Bucket options:
     - Enables versioning.
     - Enables transfer acceleration.
     - Enables server-side encryption.
@@ -39,4 +39,12 @@ locals {
   } if bucket["enable_transfer_acceleration"] == true]
 
   bucket_transfer_acceleration_cfg_map = { for bucket in local.bucket_transfer_acceleration_cfg_normalised : bucket["name"] => bucket }
+
+  // 2. Enable versioning
+  bucket_versioning_cfg_normalised = [for bucket in local.bucket_options_normalised : {
+    name              = bucket["name"]
+    enable_versioning = bucket["enable_versioning"]
+  } if bucket["enable_versioning"] == true]
+
+  bucket_versioning_cfg_map = { for bucket in local.bucket_versioning_cfg_normalised : bucket["name"] => bucket }
 }

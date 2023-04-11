@@ -11,3 +11,11 @@ resource "aws_s3_bucket_accelerate_configuration" "this" {
   bucket   = join("", [for k, v in aws_s3_bucket.this : v.bucket if k == each.key])
   status   = "Enabled"
 }
+
+resource "aws_s3_bucket_versioning" "this" {
+  for_each = local.bucket_versioning_cfg_map
+  bucket   = join("", [for k, v in aws_s3_bucket.this : v.bucket if k == each.key])
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
