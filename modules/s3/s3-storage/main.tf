@@ -30,3 +30,9 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
     }
   }
 }
+
+resource "aws_s3_bucket_policy" "this" {
+  for_each = local.bucket_permissions_cfg_map
+  bucket   = join("", [for k, v in aws_s3_bucket.this : v.bucket if k == each.key])
+  policy   = data.aws_iam_policy_document.merged_policy[each.key].json
+}

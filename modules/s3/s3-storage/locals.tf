@@ -4,8 +4,9 @@ locals {
   /*
     * Feature flags
   */
-  is_enabled                = !var.is_enabled ? false : var.bucket_config == null ? false : length(var.bucket_config) > 0
-  is_bucket_options_enabled = !local.is_enabled ? false : var.bucket_options == null ? false : length(var.bucket_options) > 0
+  is_enabled                    = !var.is_enabled ? false : var.bucket_config == null ? false : length(var.bucket_config) > 0
+  is_bucket_options_enabled     = !local.is_enabled ? false : var.bucket_options == null ? false : length(var.bucket_options) > 0
+  is_bucket_permissions_enabled = !local.is_enabled ? false : var.bucket_permissions == null ? false : length(var.bucket_permissions) > 0
 
   /*
     * Bucket basic configuration
@@ -55,4 +56,20 @@ locals {
   } if bucket["enable_default_server_side_encryption"] == true]
 
   bucket_default_server_side_encryption_cfg_map = { for bucket in local.bucket_default_server_side_encryption_cfg_normalised : bucket["name"] => bucket }
+
+  /*
+    * Bucket permissions:
+    * - Out-of-the-box permissions for the bucket.
+  */
+  bucket_permissions_cfg_normalised = !local.is_bucket_permissions_enabled ? [] : [
+    for p in var.bucket_permissions : {
+      name                           = lower(trimspace(p.name))
+      enable_encrypted_uploads_only  = p["enable_encrypted_uploads_only"] == null ? false : p["enable_encrypted_uploads_only"]
+      enable_ssl_requests_only       = p["enable_ssl_requests_only"] == null ? false : p["enable_ssl_requests_only"]
+      iam_policy_documents_to_attach = p["iam_policy_documents_to_attach"] == null ? [] : p["iam_policy_documents_to_attach"]
+    }
+  ]
+
+  bucket_permissions_cfg_map = !local.is_bucket_permissions_enabled ? {} : { for p in local.bucket_permissions_cfg_normalised : p["name"] => p }
+
 }

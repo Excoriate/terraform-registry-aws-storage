@@ -62,3 +62,25 @@ For a more detailed documentation about this resource, please refer to the follo
 https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket
 EOF
 }
+
+variable "bucket_permissions" {
+  type = list(object({
+    name                          = string
+    enable_encrypted_uploads_only = optional(bool, false)
+    enable_ssl_requests_only      = optional(bool, false)
+    iam_policy_documents_to_attach = optional(list(object({
+      name            = string
+      policy_document = string
+    })), [])
+  }))
+  default     = null
+  description = <<EOF
+ A list of objects to configure specific permissions for one or many buckets. The following attributes
+are currently supported:
+- name: A terraform identifier. It shouldn't be used for naming this resource.
+- enable_encrypted_uploads_only: A boolean that indicates if the bucket will have encrypted uploads only enabled.
+- enable_ssl_requests_only: A boolean that indicates if the bucket will have SSL requests only enabled.
+- iam_policy_documents_to_attach: A list of IAM policy documents to attach to the bucket. The policy documents should be
+in JSON format.
+EOF
+}
