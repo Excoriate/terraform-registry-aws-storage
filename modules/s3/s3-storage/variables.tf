@@ -42,3 +42,23 @@ For a more detailed documentation about this resource, please refer to the follo
 https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket
 EOF
 }
+
+variable "bucket_options" {
+  type = list(object({
+    name                                  = string
+    enable_transfer_acceleration          = optional(bool, false)
+    enable_versioning                     = optional(bool, false)
+    enable_default_server_side_encryption = optional(bool, false)
+  }))
+  default     = null
+  description = <<EOF
+  A list of objects that contains optional configurations for the buckets. The following attributes
+are currently supported:
+- name: A terraform identifier. It shouldn't be used for naming this resource.
+- enable_transfer_acceleration: A boolean that indicates if the bucket will have transfer acceleration enabled.
+- enable_versioning: A boolean that indicates if the bucket will have versioning enabled.
+- enable_default_server_side_encryption: A boolean that indicates if the bucket will have default server side encryption enabled.
+For a more detailed documentation about this resource, please refer to the following link:
+https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket
+EOF
+}

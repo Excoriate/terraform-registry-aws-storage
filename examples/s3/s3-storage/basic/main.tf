@@ -3,5 +3,6 @@ module "main_module" {
   is_enabled = var.is_enabled
   aws_region = var.aws_region
 
-  bucket_config = var.bucket_config
+  bucket_config  = var.bucket_config
+  bucket_options = var.bucket_options
 }
