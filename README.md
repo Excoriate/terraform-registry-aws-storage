@@ -47,6 +47,7 @@ The documentation is **automatically generated** by [terraform-docs](https://ter
 |-----------------------------------|----------|-----------------------------------------------------------------------------------------------------------|
 | `aws-secrets-manager`             | Stable ✅ | Create secrets in AWS, using secrets manager. It includes a CLI to manage secret values outside terraform |
 | `aws-secrets-manager-permissions` | Stable ✅ | Create custom IAM policies, and attachments for AWS secrets created through Secrets manager.              |
+| `aws-secrets-manager-rotation`    | Stable ✅ | Create the rotation configuration for an existing secret.                                                 |
 | `aws-secrets-dynamodb`            | Stable ✅ | Create an AWS DynamoDB table, with a set of common parameters.                                            |
 | `aws-s3-storage`                  | Stable ✅ | Create an S3 bucket for object-storage purpose.                                                           |
 

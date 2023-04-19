@@ -7,30 +7,36 @@ content: |-
     ## Description
     {{ .Header }}
 
-    This module sets IAM Policies, and optionally IAM roles attachments to specific roles in order to grant several permissions (E.g.: read a secret) to a specific service, or component.
+    This module create the rotation configuration for a secret.
     A summary of its main features:
-    🚀 Create an IAM policy, based on a looked up AWS secret.
-    🚀 Create optionally an attachment, if there's an IAM role that's passed.
+    🚀 Create the rotation configuration, with specific rules for the rotation lambda.
+
+    It do not create the rotation lambda. It is up to you to create it, and to grant the proper permissions to the secret.
 
     ---
     ## Example
     Examples of this module's usage are available in the [examples](./examples) folder.
 
     ```hcl
-    {{ include "../../examples/secrets-manager-permissions/basic/main.tf" }}
+    {{ include "../../examples/secrets-manager-rotation/basic/main.tf" }}
     ```
 
 
     Simple recipe:
     ```hcl
-    {{ include "../../examples/secrets-manager-permissions/basic/config/fixtures.tfvars" }}
+    {{ include "../../examples/secrets-manager-rotation/basic/config/fixtures.tfvars" }}
     ```
-    In this example, more elaborate permissions are granted
+
+    In this example, a simple rotation configuration is required for a single (existing) secret
     ```hcl
-    {{ include "../../examples/secrets-manager-permissions/basic/config/fixtures-permissions.tfvars" }}
+    {{ include "../../examples/secrets-manager-rotation/basic/config/fixtures-rotation-simple.tfvars" }}
+    ```
+
+    In this example, multiple secret rotation configurations are passed.
+    ```hcl
+    {{ include "../../examples/secrets-manager-rotation/basic/config/fixtures-rotation-multiple.tfvars" }}
     ```
     ---
-
 
     ## Module's documentation
     (This documentation is auto-generated using [terraform-docs](https://terraform-docs.io))
