@@ -38,3 +38,13 @@ output "secret_rotation_enabled" {
   value       = module.main_module.secret_rotation_enabled
   description = "Whether the rotation is enabled."
 }
+
+output "secret_rotation_default_policy_arn" {
+  value       = module.main_module.secret_rotation_default_policy_arn
+  description = "The default policy for the secret rotation."
+}
+
+output "secret_rotation_default_policy_doc" {
+  value       = module.main_module.secret_rotation_default_policy_doc
+  description = "The default policy document for the secret rotation."
+}

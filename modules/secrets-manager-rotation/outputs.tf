@@ -47,3 +47,13 @@ output "secret_rotation_enabled" {
   value       = [for secret in aws_secretsmanager_secret_rotation.this : secret.rotation_enabled]
   description = "Whether the rotation is enabled."
 }
+
+output "secret_rotation_default_policy_arn" {
+  value       = [for p in aws_iam_policy.this : p.arn]
+  description = "The default policy for the secret rotation."
+}
+
+output "secret_rotation_default_policy_doc" {
+  value       = [for p in aws_iam_policy.this : p.policy]
+  description = "The default policy document for the secret rotation."
+}

@@ -6,6 +6,8 @@
 This module create the rotation configuration for a secret.
 A summary of its main features:
 🚀 Create the rotation configuration, with specific rules for the rotation lambda.
+🚀 Create the lambda permissions required for the lambda function to perform rotation actions on the target secret.
+🚀 Create an optional IAM (resource-based) policy that can be attached to the rotation lambda.
 
 It do not create the rotation lambda. It is up to you to create it, and to grant the proper permissions to the secret.
 
@@ -40,7 +42,6 @@ module "main_module" {
 #  secret_string = random_string.secret_value.result
 #}
 ```
-
 
 Simple recipe:
 ```hcl
@@ -120,6 +121,7 @@ rotation_rules_config = [
   }
 ]
 ```
+
 ---
 
 ## Module's documentation
@@ -138,7 +140,11 @@ No modules.
 
 | Name | Type |
 |------|------|
+| [aws_iam_policy.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
+| [aws_lambda_permission.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
 | [aws_secretsmanager_secret_rotation.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_rotation) | resource |
+| [aws_iam_policy_document.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_lambda_function.rotation_lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/lambda_function) | data source |
 | [aws_secretsmanager_secret.lookup_by_arn](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/secretsmanager_secret) | data source |
 | [aws_secretsmanager_secret.lookup_by_name](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/secretsmanager_secret) | data source |
 
@@ -155,9 +161,9 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to deploy the resources | `string` | n/a | yes |
 | <a name="input_is_enabled"></a> [is\_enabled](#input\_is\_enabled) | Whether this module will be created or not. It is useful, for stack-composite<br>modules that conditionally includes resources provided by this module.. | `bool` | n/a | yes |
-| <a name="input_rotation_config"></a> [rotation\_config](#input\_rotation\_config) | default     = null<br>This configuration allow you to create a rotation for a secret that already exists.<br>The current attributes of the secret will be used to create the rotation:<br>- name: Friendly terraform identifier. It will be used to create the rotation name.<br>- secret\_name: The name of the secret. If not provided, the name will be used.<br>- secret\_arn: The ARN of the secret. If not provided, the ARN will be retrieved from the secret name.<br>If the 'secret\_arn' is provided, the 'secret\_name' will be ignored. | <pre>list(object({<br>    name        = string<br>    secret_name = optional(string, null)<br>    secret_arn  = optional(string, null)<br>  }))</pre> | `null` | no |
-| <a name="input_rotation_lambda_config"></a> [rotation\_lambda\_config](#input\_rotation\_lambda\_config) | This configuration allow you to create a rotation for a secret that already exists.<br>The current attributes of the secret will be used to create the rotation:<br>- name: Friendly terraform identifier. It will be used to create the rotation name.<br>- secret\_name: The name of the secret. If not provided, the name will be used.<br>- lambda\_arn: The ARN of the lambda function. If not provided, the ARN will be retrieved from the lambda name.<br>If the 'lambda\_arn' is provided, the 'lambda\_name' will be ignored.<br>- enable\_default\_lambda: If true, the module will create a default lambda function to perform the rotation. | <pre>list(object({<br>    name                  = string<br>    secret_name           = optional(string, null)<br>    lambda_arn            = optional(string, null)<br>    enable_default_lambda = optional(bool, false) // Available in future version of this module.<br>  }))</pre> | `null` | no |
-| <a name="input_rotation_rules_config"></a> [rotation\_rules\_config](#input\_rotation\_rules\_config) | This configuration allow you to create a rotation for a secret that already exists.<br>The current attributes of the secret will be used to create the rotation:<br>- name: Friendly terraform identifier. It will be used to create the rotation name.<br>- secret\_name: The name of the secret. If not provided, the name will be used.<br>- rotation\_duration: The number of days between automatic scheduled rotations of the secret.<br>- rotation\_automatically\_after\_days: The number of days after the previous rotation when Secrets Manager triggers the next automatic rotation.<br>- rotation\_by\_schedule\_expression: A cron expression that defines the schedule for the rotation. | <pre>list(object({<br>    name                              = string<br>    secret_name                       = optional(string, null)<br>    rotation_duration                 = optional(number, null)<br>    rotation_automatically_after_days = optional(number, null)<br>    rotation_by_schedule_expression   = optional(string, null)<br>  }))</pre> | `null` | no |
+| <a name="input_rotation_config"></a> [rotation\_config](#input\_rotation\_config) | This configuration allows you to set up a rotation for an existing secret.<br>Attributes:<br>- name: Friendly Terraform identifier used to create the rotation name.<br>- secret\_name: Name of the existing secret (optional). If not provided, 'name' will be used.<br>- secret\_arn: ARN of the existing secret (optional). If not provided, the ARN will be fetched using 'secret\_name'.<br>- enable\_default\_iam\_policy: If true, the module creates a default IAM policy for rotation.<br><br>Note: If 'secret\_arn' is provided, 'secret\_name' will be ignored. | <pre>list(object({<br>    name                      = string<br>    secret_name               = optional(string, null)<br>    secret_arn                = optional(string, null)<br>    enable_default_iam_policy = optional(bool, false)<br>  }))</pre> | `null` | no |
+| <a name="input_rotation_lambda_config"></a> [rotation\_lambda\_config](#input\_rotation\_lambda\_config) | This configuration allows you to set up a rotation for an existing secret using a Lambda function.<br>Attributes:<br>- name: Friendly Terraform identifier used to create the rotation name.<br>- secret\_name: Name of the existing secret (optional). If not provided, 'name' will be used.<br>- lambda\_arn: ARN of the Lambda function (optional). If not provided, the ARN will be fetched using 'lambda\_name'.<br>- lambda\_name: Name of the Lambda function (optional). If provided, it generates the necessary 'lambda\_permissions' for the secret to invoke the Lambda function.<br>- enable\_default\_lambda: If true, the module creates a default Lambda function for rotation.<br><br>Note: If 'lambda\_arn' is provided, 'lambda\_name' will be ignored. | <pre>list(object({<br>    name                  = string<br>    secret_name           = optional(string, null)<br>    lambda_arn            = optional(string, null)<br>    lambda_name           = optional(string, null)<br>    enable_default_lambda = optional(bool, false)<br>  }))</pre> | `null` | no |
+| <a name="input_rotation_rules_config"></a> [rotation\_rules\_config](#input\_rotation\_rules\_config) | This configuration allows you to set up rotation rules for an existing secret.<br>Attributes:<br>- name: Friendly Terraform identifier used to create the rotation name.<br>- secret\_name: Name of the existing secret (optional). If not provided, 'name' will be used.<br>- rotation\_duration: Number of days between automatic scheduled rotations of the secret (optional).<br>- rotation\_automatically\_after\_days: Number of days after the previous rotation when Secrets Manager triggers the next automatic rotation (optional).<br>- rotation\_by\_schedule\_expression: A cron expression that defines the schedule for the rotation (optional).<br><br>For more information, refer to the AWS documentation on rotation rules:<br>https://docs.aws.amazon.com/secretsmanager/latest/userguide/rotating-secrets.html | <pre>list(object({<br>    name                              = string<br>    secret_name                       = optional(string, null)<br>    rotation_duration                 = optional(number, null)<br>    rotation_automatically_after_days = optional(number, null)<br>    rotation_by_schedule_expression   = optional(string, null)<br>  }))</pre> | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to add to all resources. | `map(string)` | `{}` | no |
 
 ## Outputs
@@ -170,6 +176,8 @@ No modules.
 | <a name="output_lookup_arn_secret_name"></a> [lookup\_arn\_secret\_name](#output\_lookup\_arn\_secret\_name) | The name of the secret. |
 | <a name="output_lookup_name_secret_id"></a> [lookup\_name\_secret\_id](#output\_lookup\_name\_secret\_id) | The ID of the secret. |
 | <a name="output_lookup_name_secret_name"></a> [lookup\_name\_secret\_name](#output\_lookup\_name\_secret\_name) | The name of the secret. |
+| <a name="output_secret_rotation_default_policy_arn"></a> [secret\_rotation\_default\_policy\_arn](#output\_secret\_rotation\_default\_policy\_arn) | The default policy for the secret rotation. |
+| <a name="output_secret_rotation_default_policy_doc"></a> [secret\_rotation\_default\_policy\_doc](#output\_secret\_rotation\_default\_policy\_doc) | The default policy document for the secret rotation. |
 | <a name="output_secret_rotation_enabled"></a> [secret\_rotation\_enabled](#output\_secret\_rotation\_enabled) | Whether the rotation is enabled. |
 | <a name="output_secret_rotation_id"></a> [secret\_rotation\_id](#output\_secret\_rotation\_id) | The ID of the secret rotation. |
 | <a name="output_tags_set"></a> [tags\_set](#output\_tags\_set) | The tags set for the module. |

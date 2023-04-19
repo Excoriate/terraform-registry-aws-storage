@@ -10,6 +10,8 @@ content: |-
     This module create the rotation configuration for a secret.
     A summary of its main features:
     🚀 Create the rotation configuration, with specific rules for the rotation lambda.
+    🚀 Create the lambda permissions required for the lambda function to perform rotation actions on the target secret.
+    🚀 Create an optional IAM (resource-based) policy that can be attached to the rotation lambda.
 
     It do not create the rotation lambda. It is up to you to create it, and to grant the proper permissions to the secret.
 
@@ -20,7 +22,6 @@ content: |-
     ```hcl
     {{ include "../../examples/secrets-manager-rotation/basic/main.tf" }}
     ```
-
 
     Simple recipe:
     ```hcl
@@ -36,6 +37,7 @@ content: |-
     ```hcl
     {{ include "../../examples/secrets-manager-rotation/basic/config/fixtures-rotation-multiple.tfvars" }}
     ```
+
     ---
 
     ## Module's documentation

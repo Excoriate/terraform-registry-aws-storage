@@ -35,9 +35,10 @@ locals {
   */
   rotation = !local.is_rotation_module_enabled ? [] : [
     for s in var.rotation_config : {
-      name              = trimspace(s.name)
-      is_lookup_by_arn  = s["secret_name"] != null ? false : s["secret_name"] != "" ? false : true
-      is_lookup_by_name = s["secret_name"] == null ? false : s["secret_name"] == "" ? false : true
+      name                                   = trimspace(s.name)
+      is_lookup_by_arn                       = s["secret_name"] != null ? false : s["secret_name"] != "" ? false : true
+      is_lookup_by_name                      = s["secret_name"] == null ? false : s["secret_name"] == "" ? false : true
+      create_default_iam_policy_for_rotation = s["enable_default_iam_policy"] == null ? false : s["enable_default_iam_policy"]
     }
   ]
 
@@ -50,7 +51,8 @@ locals {
   lambda = !local.is_rotation_module_enabled ? [] : [
     for s in var.rotation_lambda_config : {
       name                               = trimspace(s.name)
-      rotation_lambda_arn                = s["lambda_arn"] == null ? "" : trimspace(s["lambda_arn"])
+      rotation_lambda_arn                = s["lambda_arn"] == null ? null : trimspace(s["lambda_arn"])
+      rotation_lambda_name               = s["lambda_name"] == null ? null : trimspace(s["lambda_name"])
       is_default_rotation_lambda_enabled = s["lambda_arn"] != null ? false : s["lambda_arn"] != "" ? false : true
     }
   ]
