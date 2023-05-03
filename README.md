@@ -50,6 +50,7 @@ The documentation is **automatically generated** by [terraform-docs](https://ter
 | `aws-secrets-manager-rotation`    | Stable ✅ | Create the rotation configuration for an existing secret.                                                 |
 | `aws-secrets-dynamodb`            | Stable ✅ | Create an AWS DynamoDB table, with a set of common parameters.                                            |
 | `aws-s3-storage`                  | Stable ✅ | Create an S3 bucket for object-storage purpose.                                                           |
+| `aws-s3-lambda-deployment-bucket` | Stable ✅ | Opinionated S3 bucket specifically developed for lambda deployment use-cases..                            |
 
 ### Getting Started
 
