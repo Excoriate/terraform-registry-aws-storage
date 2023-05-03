@@ -1,0 +1,62 @@
+---
+formatter: markdown table
+
+header-from: main.tf
+content: |-
+    # ☁️ AWS S3 Lambda Deployment Bucket
+    ## Description
+    {{ .Header }}
+
+    This module creates a S3 bucket for lambda deployment.
+
+    * 🚀 **Versioning** - Versioning is enabled by default. This can be disabled by setting `versioning_enabled` to `false`.
+    * 🚀 **Server side encryption** - Server side encryption is enabled by default. This can be disabled by setting `server_side_encryption_enabled` to `false`.
+    * 🚀 **Custom permissions** - Custom permissions can be added by setting `permissions` to a list of `aws_iam_policy_document` resources.
+
+    ---
+    ## Example
+    Examples of this module's usage are available in the [examples](./examples) folder.
+
+    ```hcl
+    {{ include "../../../examples/s3/s3-lambda-deployment/basic/main.tf" }}
+    ```
+
+    Simple recipe:
+    ```hcl
+    {{ include "../../../examples/s3/s3-lambda-deployment/basic/config/fixtures.tfvars" }}
+    ```
+
+    An example that implement an S3 bucket, with custom permissions, even attaching specific statements to form a dynamic policy:
+    ```hcl
+    {{ include "../../../examples/s3/s3-lambda-deployment/basic/config/fixtures-permissions-with-extra-policies.tfvars" }}
+    ```
+    For module composition, It's recommended to take a look at the module's `outputs` to understand what's available:
+    ```hcl
+    {{ include "outputs.tf" }}
+    ```
+    ---
+
+    ## Module's documentation
+    (This documentation is auto-generated using [terraform-docs](https://terraform-docs.io))
+    {{ .Providers }}
+
+    {{ .Modules }}
+
+    {{ .Resources }}
+
+    {{ .Requirements }}
+
+    {{ .Inputs }}
+
+    {{ .Outputs }}
+
+output:
+    file: README.md
+    mode: inject
+    template: |-
+        <!-- BEGIN_TF_DOCS -->
+        {{ .Content }}
+        <!-- END_TF_DOCS -->
+settings:
+    anchor: true
+    color: true
