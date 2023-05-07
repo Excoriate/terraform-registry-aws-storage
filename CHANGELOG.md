@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/Excoriate/terraform-registry-aws-storage/compare/v1.1.0...v1.2.0) (2023-05-07)
+
+
+### Features
+
+* Add capability for generating random secret value ([#3](https://github.com/Excoriate/terraform-registry-aws-storage/issues/3)) ([790d0d2](https://github.com/Excoriate/terraform-registry-aws-storage/commit/790d0d293776d3e3bcdff1ed7c022c04f16e2506))
+
 ## [1.1.0](https://github.com/Excoriate/terraform-registry-aws-storage/compare/v1.0.0...v1.1.0) (2023-05-03)
 
 
