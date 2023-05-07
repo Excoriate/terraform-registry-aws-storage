@@ -16,13 +16,13 @@ locals {
   */
   secrets_config_normalised = !local.is_enabled ? [] : [
     for secret in var.secrets_config : {
-      name                    = trimspace(secret.name)
-      path                    = trimspace(secret.path)
-      description             = secret["description"] == null ? "This secret does not have a description set" : trimspace(secret["description"])
-      kms_key_id              = secret["kms_key_id"] == null ? null : trimspace(secret["kms_key_id"])
-      recovery_window_in_days = secret["recovery_window_in_days"] == null ? 0 : secret["recovery_window_in_days"]
-      policy                  = secret["policy"] == null ? null : trimspace(secret["policy"])
-
+      name                       = trimspace(secret.name)
+      path                       = trimspace(secret.path)
+      description                = secret["description"] == null ? "This secret does not have a description set" : trimspace(secret["description"])
+      kms_key_id                 = secret["kms_key_id"] == null ? null : trimspace(secret["kms_key_id"])
+      recovery_window_in_days    = secret["recovery_window_in_days"] == null ? 0 : secret["recovery_window_in_days"]
+      policy                     = secret["policy"] == null ? null : trimspace(secret["policy"])
+      enable_random_secret_value = secret["enable_random_secret_value"] == null ? false : secret["enable_random_secret_value"]
       // Feature flags
       is_prefix_enforced = !local.is_enforced_prefixes_set ? false : lookup(local.prefixes_create, secret.name, null) == null ? false : true
     }
