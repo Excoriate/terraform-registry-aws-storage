@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/Excoriate/terraform-registry-aws-storage/compare/v1.2.0...v1.2.1) (2023-05-07)
+
+
+### Other
+
+* Fix release-please workflow ([4f0aaaa](https://github.com/Excoriate/terraform-registry-aws-storage/commit/4f0aaaae0eb972127e22397bf64c356168161833))
+
 ## [1.2.0](https://github.com/Excoriate/terraform-registry-aws-storage/compare/v1.1.0...v1.2.0) (2023-05-07)
 
 
