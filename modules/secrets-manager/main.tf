@@ -17,3 +17,19 @@ resource "aws_secretsmanager_secret" "this" {
 
   tags = var.tags
 }
+
+
+resource "aws_secretsmanager_secret_version" "this" {
+  for_each      = { for k, v in local.secrets_config_create : k => v if v["enable_random_secret_value"] }
+  secret_id     = aws_secretsmanager_secret.this[each.key].id
+  secret_string = random_string.random_secret_value[each.key].result
+  depends_on    = [aws_secretsmanager_secret.this]
+}
+
+
+resource "random_string" "random_secret_value" {
+  for_each   = { for k, v in local.secrets_config_create : k => v if v["enable_random_secret_value"] }
+  length     = 15
+  special    = false
+  depends_on = [aws_secretsmanager_secret.this]
+}
