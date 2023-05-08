@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.3](https://github.com/Excoriate/terraform-registry-aws-storage/compare/v1.2.2...v1.2.3) (2023-05-08)
+
+
+### Bug Fixes
+
+* Add correct arn output for rotation lambda ([23724aa](https://github.com/Excoriate/terraform-registry-aws-storage/commit/23724aa1a0bc072da2fadf2dc4d6f02cb585677f))
+
 ## [1.2.2](https://github.com/Excoriate/terraform-registry-aws-storage/compare/v1.2.1...v1.2.2) (2023-05-08)
 
 
