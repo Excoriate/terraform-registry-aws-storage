@@ -54,6 +54,6 @@ output "secret_rotation_id" {
 }
 
 output "secret_rotation_lambda_arn" {
-  value       = [for r in aws_secretsmanager_secret_rotation.this : r.lambda_arn]
+  value       = [for r in aws_secretsmanager_secret_rotation.this : r.rotation_lambda_arn]
   description = "The ARN of the Lambda function."
 }
