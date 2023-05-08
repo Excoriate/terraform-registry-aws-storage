@@ -9,13 +9,6 @@ rotation_config = [
   }
 ]
 
-rotation_lambda_config = [
-  {
-    name       = "test-secret-1"
-    lambda_arn = "arn:aws:lambda:us-east-1:123456789012:function:my-function"
-  }
-]
-
 rotation_rules_config = [
   {
     name                              = "test-secret-1"

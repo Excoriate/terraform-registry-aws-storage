@@ -55,3 +55,6 @@
 app/secret-manager-filler/cmd/secret-manager-filler
 
 /DevEx/scripts/config/generator/gen-cli
+
+*.zip
+*.tar.gz

@@ -38,16 +38,6 @@ output "lookup_name_secret_name" {
   description = "The name of the secret."
 }
 
-output "secret_rotation_id" {
-  value       = [for secret in aws_secretsmanager_secret_rotation.this : secret.id]
-  description = "The ID of the secret rotation."
-}
-
-output "secret_rotation_enabled" {
-  value       = [for secret in aws_secretsmanager_secret_rotation.this : secret.rotation_enabled]
-  description = "Whether the rotation is enabled."
-}
-
 output "secret_rotation_default_policy_arn" {
   value       = [for p in aws_iam_policy.this : p.arn]
   description = "The default policy for the secret rotation."
@@ -56,4 +46,14 @@ output "secret_rotation_default_policy_arn" {
 output "secret_rotation_default_policy_doc" {
   value       = [for p in aws_iam_policy.this : p.policy]
   description = "The default policy document for the secret rotation."
+}
+
+output "secret_rotation_id" {
+  value       = [for r in aws_secretsmanager_secret_rotation.this : r.id]
+  description = "The ID of the secret rotation."
+}
+
+output "secret_rotation_lambda_arn" {
+  value       = [for r in aws_secretsmanager_secret_rotation.this : r.lambda_arn]
+  description = "The ARN of the Lambda function."
 }

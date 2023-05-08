@@ -5,29 +5,29 @@ locals {
   * Feature flags
   */
   is_enabled                 = !var.is_enabled ? false : var.rotation_config == null ? false : length(var.rotation_config) > 0
-  is_rotation_lambda_enabled = !local.is_enabled ? false : var.rotation_lambda_config == null ? false : length(var.rotation_lambda_config) > 0
   is_rotation_rules_config   = !local.is_enabled ? false : var.rotation_rules_config == null ? false : length(var.rotation_rules_config) > 0
-  is_rotation_module_enabled = local.is_enabled && local.is_rotation_lambda_enabled && local.is_rotation_rules_config
+  is_rotation_module_enabled = local.is_enabled && local.is_rotation_rules_config
 
   /* Lookup configuration
    * This configuration allow this module to lookup for an existing secret.
    * The lookup could happen by two mechanism: 'arn' and 'name'.
   */
-  lookup = !local.is_rotation_module_enabled ? [] : [
+  secret_lookup = !local.is_rotation_module_enabled ? [] : [
     for s in var.rotation_config : {
       name              = trimspace(s.name)
-      secret_name       = s["secret_name"] == null ? trimspace(s.name) : trimspace(s["secret_name"])
-      secret_arn        = s["secret_arn"] == null ? "" : trimspace(s["secret_arn"])
-      is_lookup_by_arn  = s["secret_name"] != null ? false : s["secret_name"] != "" ? false : true
-      is_lookup_by_name = s["secret_name"] == null ? false : s["secret_name"] == "" ? false : true
+      secret_name       = s["secret_name"] == null ? null : trimspace(s["secret_name"])
+      secret_arn        = s["secret_arn"] == null ? null : trimspace(s["secret_arn"])
+      is_lookup_by_arn  = s["secret_arn"] != null
+      is_lookup_by_name = s["secret_name"] != null
     }
   ]
 
-  lookup_by_arn = !local.is_rotation_module_enabled ? {} : {
-  for r in local.lookup : r["name"] => r if r["is_lookup_by_arn"] }
+  secret_lookup_by_arn = !local.is_rotation_module_enabled ? {} : {
+  for r in local.secret_lookup : r["name"] => r if r["is_lookup_by_arn"] }
 
-  lookup_by_name = !local.is_rotation_module_enabled ? {} : {
-  for r in local.lookup : r["name"] => r if r["is_lookup_by_name"] }
+  secret_lookup_by_name = !local.is_rotation_module_enabled ? {} : {
+  for r in local.secret_lookup : r["name"] => r if r["is_lookup_by_name"] }
+
 
   /*
   * Rotation configuration
@@ -36,9 +36,11 @@ locals {
   rotation = !local.is_rotation_module_enabled ? [] : [
     for s in var.rotation_config : {
       name                                   = trimspace(s.name)
-      is_lookup_by_arn                       = s["secret_name"] != null ? false : s["secret_name"] != "" ? false : true
-      is_lookup_by_name                      = s["secret_name"] == null ? false : s["secret_name"] == "" ? false : true
+      is_lookup_by_arn                       = s["secret_arn"] != null
+      is_lookup_by_name                      = s["secret_name"] != null
       create_default_iam_policy_for_rotation = s["enable_default_iam_policy"] == null ? false : s["enable_default_iam_policy"]
+      rotation_lambda_arn                    = s["rotation_lambda_arn"] == null ? null : s["rotation_lambda_arn"]
+      rotation_lambda_name                   = s["rotation_lambda_name"] == null ? null : s["rotation_lambda_name"]
     }
   ]
 
@@ -46,19 +48,13 @@ locals {
   for r in local.rotation : r["name"] => r }
 
   /*
-  * Rotation lambda.
+  * Rotation Lambda lookup
+  * Currently, the used data source supports only the function name
   */
-  lambda = !local.is_rotation_module_enabled ? [] : [
-    for s in var.rotation_lambda_config : {
-      name                               = trimspace(s.name)
-      rotation_lambda_arn                = s["lambda_arn"] == null ? null : trimspace(s["lambda_arn"])
-      rotation_lambda_name               = s["lambda_name"] == null ? null : trimspace(s["lambda_name"])
-      is_default_rotation_lambda_enabled = s["lambda_arn"] != null ? false : s["lambda_arn"] != "" ? false : true
-    }
-  ]
 
-  lambda_cfg = !local.is_rotation_module_enabled ? {} : {
-  for r in local.lambda : r["name"] => r }
+  lambda_lookup = !local.is_rotation_module_enabled ? {} : {
+    for l in local.rotation_cfg : l["name"] => l if l["rotation_lambda_name"] != null
+  }
 
   /*
    * Rotation rules configuration.
