@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/Excoriate/terraform-registry-aws-storage/compare/v1.2.1...v1.2.2) (2023-05-08)
+
+
+### Bug Fixes
+
+* Add correct lambda lookup capability, by function name ([75a21ff](https://github.com/Excoriate/terraform-registry-aws-storage/commit/75a21ff7d0072c403b5738c4f159aec99a0e27e6))
+
 ## [1.2.1](https://github.com/Excoriate/terraform-registry-aws-storage/compare/v1.2.0...v1.2.1) (2023-05-07)
 
 
