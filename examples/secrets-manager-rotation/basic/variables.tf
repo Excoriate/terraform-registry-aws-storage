@@ -24,12 +24,13 @@ Custom input variables
 */
 variable "rotation_config" {
   type = list(object({
-    name                      = string
-    secret_name               = optional(string, null)
-    secret_arn                = optional(string, null)
-    enable_default_iam_policy = optional(bool, false)
-    rotation_lambda_arn       = optional(string, null)
-    rotation_lambda_name      = optional(string, null)
+    name                                = string
+    secret_name                         = optional(string, null)
+    secret_arn                          = optional(string, null)
+    enable_default_iam_policy           = optional(bool, false)
+    rotation_lambda_arn                 = optional(string, null)
+    rotation_lambda_name                = optional(string, null)
+    disable_built_in_lambda_permissions = optional(bool, false)
   }))
   description = <<EOF
 This configuration allows you to set up a rotation for an existing secret.
@@ -40,6 +41,7 @@ Attributes:
 - enable_default_iam_policy: If true, the module creates a default IAM policy for rotation.
 - rotation_lambda_arn: ARN of the Lambda function (optional). If not provided, the ARN will be fetched using 'rotation_lambda_name'.
 - rotation_lambda_name: Name of the Lambda function (optional). If provided, it generates the necessary 'lambda_permissions' for the secret to invoke the Lambda function.
+- disable_built_in_lambda_permissions: If true, the module does not create the built-in Lambda permissions for the secret to invoke the Lambda function.
 
 Note: If 'secret_arn' is provided, 'secret_name' will be ignored.
 EOF

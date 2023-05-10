@@ -41,6 +41,7 @@ locals {
       create_default_iam_policy_for_rotation = s["enable_default_iam_policy"] == null ? false : s["enable_default_iam_policy"]
       rotation_lambda_arn                    = s["rotation_lambda_arn"] == null ? null : s["rotation_lambda_arn"]
       rotation_lambda_name                   = s["rotation_lambda_name"] == null ? null : s["rotation_lambda_name"]
+      disable_built_in_lambda_permissions    = s["disable_built_in_lambda_permissions"] == null ? false : s["disable_built_in_lambda_permissions"]
     }
   ]
 

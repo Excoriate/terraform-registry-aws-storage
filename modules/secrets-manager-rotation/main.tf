@@ -19,7 +19,8 @@ resource "aws_secretsmanager_secret_rotation" "this" {
 
 
 resource "aws_lambda_permission" "this" {
-  for_each      = local.rotation_cfg
+  #  for_each      = local.rotation_cfg
+  for_each      = { for k, v in local.rotation_cfg : k => v if !v["disable_built_in_lambda_permissions"] } // In case there are already created permissions
   action        = "lambda:InvokeFunction"
   function_name = data.aws_lambda_function.rotation_lambda_by_name[each.key].function_name
   principal     = "secretsmanager.amazonaws.com"
