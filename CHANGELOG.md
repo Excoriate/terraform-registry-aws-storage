@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.4](https://github.com/Excoriate/terraform-registry-aws-storage/compare/v1.2.3...v1.2.4) (2023-05-10)
+
+
+### Bug Fixes
+
+* Add feature flag to disable built-in permissions ([c2bf19b](https://github.com/Excoriate/terraform-registry-aws-storage/commit/c2bf19b9bb632e12df58325a3eb80eaf43deae57))
+
 ## [1.2.3](https://github.com/Excoriate/terraform-registry-aws-storage/compare/v1.2.2...v1.2.3) (2023-05-08)
 
 
