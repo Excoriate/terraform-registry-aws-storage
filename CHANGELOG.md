@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.3.0](https://github.com/Excoriate/terraform-registry-aws-storage/compare/v1.2.4...v1.3.0) (2023-07-24)
+
+
+### Features
+
+* add ssm parameter store module ([922f5d0](https://github.com/Excoriate/terraform-registry-aws-storage/commit/922f5d078a8be25acefc83a72f6a66ea3a90fd0e))
+
+
+### Bug Fixes
+
+* workflows ([a8b8f1d](https://github.com/Excoriate/terraform-registry-aws-storage/commit/a8b8f1df3c99049f3c48da575852ea4028a2e3aa))
+* workflows ([05c9b2d](https://github.com/Excoriate/terraform-registry-aws-storage/commit/05c9b2d016d3a808090c4641f775aa4901e22c7c))
+
+
+### Other
+
+* add updated module in the main readme.md description ([81eaaec](https://github.com/Excoriate/terraform-registry-aws-storage/commit/81eaaeced950518d08ebaf1168be59e1ff341d6b))
+
 ## [1.2.4](https://github.com/Excoriate/terraform-registry-aws-storage/compare/v1.2.3...v1.2.4) (2023-05-10)
 
 
