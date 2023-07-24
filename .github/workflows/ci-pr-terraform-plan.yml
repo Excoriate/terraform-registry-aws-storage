@@ -22,8 +22,12 @@ jobs:
                       module: default
                       tf_version: 1.3.6
 
-                    - name: dns-zone-multi-account
-                      module: stack-dns-zone-multi-account
+                    - name: basic
+                      module: dynamodb/dynamodb-table
+                      tf_version: 1.3.6
+
+                    - name: basic
+                      module: s3/s3-storage
                       tf_version: 1.3.6
 
         defaults:
@@ -49,7 +53,7 @@ jobs:
                   tflint --version
                   tflint --init
                   tflint --disable-rule=terraform_module_pinned_source
-                  tflint .
+                  tflint
 
             - run: terraform plan -var-file=config/fixtures.tfvars
 
@@ -66,8 +70,12 @@ jobs:
                       module: default
                       tf_version: 1.3.6
 
-                    - name: dns-zone-multi-account
-                      module: stack-dns-zone-multi-account
+                    - name: basic
+                      module: dynamodb/dynamodb-table
+                      tf_version: 1.3.6
+
+                    - name: basic
+                      module: s3/s3-storage
                       tf_version: 1.3.6
         defaults:
             run:
