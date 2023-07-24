@@ -11,11 +11,6 @@ variable "aws_region" {
   description = "AWS region to deploy the resources"
 }
 
-variable "tags" {
-  type        = map(string)
-  description = "A map of tags to add to all resources."
-  default     = {}
-}
 
 /*
 -------------------------------------

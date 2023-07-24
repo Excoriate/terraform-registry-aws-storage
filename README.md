@@ -43,14 +43,15 @@ The documentation is **automatically generated** by [terraform-docs](https://ter
 
 ### Capabilities
 
-| Module                            | Status   | Description                                                                                               |
-|-----------------------------------|----------|-----------------------------------------------------------------------------------------------------------|
-| `aws-secrets-manager`             | Stable ✅ | Create secrets in AWS, using secrets manager. It includes a CLI to manage secret values outside terraform |
-| `aws-secrets-manager-permissions` | Stable ✅ | Create custom IAM policies, and attachments for AWS secrets created through Secrets manager.              |
-| `aws-secrets-manager-rotation`    | Stable ✅ | Create the rotation configuration for an existing secret.                                                 |
-| `aws-secrets-dynamodb`            | Stable ✅ | Create an AWS DynamoDB table, with a set of common parameters.                                            |
-| `aws-s3-storage`                  | Stable ✅ | Create an S3 bucket for object-storage purpose.                                                           |
-| `aws-s3-lambda-deployment-bucket` | Stable ✅ | Opinionated S3 bucket specifically developed for lambda deployment use-cases..                            |
+| Module                            | Status   |     | Description                                                                                               |
+|-----------------------------------|----------|:----|-----------------------------------------------------------------------------------------------------------|
+| `aws-secrets-manager`             | Stable ✅ |     | Create secrets in AWS, using secrets manager. It includes a CLI to manage secret values outside terraform |
+| `aws-secrets-manager-permissions` | Stable ✅ |     | Create custom IAM policies, and attachments for AWS secrets created through Secrets manager.              |
+| `aws-secrets-manager-rotation`    | Stable ✅ |     | Create the rotation configuration for an existing secret.                                                 |
+| `aws-secrets-dynamodb`            | Stable ✅ |     | Create an AWS DynamoDB table, with a set of common parameters.                                            |
+| `aws-s3-storage`                  | Stable ✅ |     | Create an S3 bucket for object-storage purpose.                                                           |
+| `aws-s3-lambda-deployment-bucket` | Stable ✅ |     | Opinionated S3 bucket specifically developed for lambda deployment use-cases..                            |
+| `aws-ssm-parameter-store`         | Stable ✅ |     | SSM parameter store module, for storing parameters with all its capabilities.                             |
 
 ### Getting Started
 
